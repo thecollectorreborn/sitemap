@@ -2,7 +2,7 @@ name: Download Blogger Sitemap Daily
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Ogni giorno a mezzanotte
+    - cron: '0 0 * * *' # ogni giorno a mezzanotte
   workflow_dispatch:
 
 jobs:
@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download sitemap.xml
         run: |
@@ -18,8 +20,8 @@ jobs:
 
       - name: Commit e Push modifiche
         run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
           git add sitemap.xml
-          git commit -m "Aggiornamento automatico sitemap $(date +'%Y-%m-%d')" || echo "Nessuna modifica"
+          git diff --quiet && git diff --staged --quiet || git commit -m "Aggiornamento automatico sitemap $(date +'%Y-%m-%d')"
           git push
