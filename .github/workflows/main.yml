@@ -2,7 +2,7 @@ name: Download Blogger Sitemap Daily
 
 on:
   schedule:
-    - cron: '0 0 * * *' # ogni giorno a mezzanotte
+    - cron: '0 0 * * *' # Ogni giorno a mezzanotte
   workflow_dispatch:
 
 jobs:
@@ -12,7 +12,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          persist-credentials: false # Evita problemi di autenticazione
+          persist-credentials: false  # Importante per evitare errori di autenticazione
 
       - name: Download sitemap.xml
         run: |
