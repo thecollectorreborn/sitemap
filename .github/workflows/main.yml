@@ -1,0 +1,25 @@
+name: Download Blogger Sitemap Daily
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Ogni giorno a mezzanotte
+  workflow_dispatch:
+
+jobs:
+  download-sitemap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download sitemap.xml
+        run: |
+          curl -L "https://thecollectorlab.blogspot.com/sitemap.xml" -o sitemap.xml
+
+      - name: Commit e Push modifiche
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git add sitemap.xml
+          git commit -m "Aggiornamento automatico sitemap $(date +'%Y-%m-%d')" || echo "Nessuna modifica"
+          git push
